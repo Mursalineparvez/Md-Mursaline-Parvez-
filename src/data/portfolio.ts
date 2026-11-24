@@ -63,12 +63,13 @@ export const PROFILE = {
   name: 'Md. Mursaline Parvez',
   shortName: 'Mursaline Parvez',
   role: 'Web Developer | Full-Stack JavaScript (React & Node.js) | AI Automation Engineer',
-  location: 'Dhaka, Bangladesh',
+  location: 'Tushardhara, Kadamtoly, Dhaka, Bangladesh',
   phone: '01567963471',
   email: 'mdmursalineparvez@gmail.com',
   linkedin: 'https://www.linkedin.com/in/mursalineparvez/',
   github: 'https://github.com/Mursalineparvez',
   kaggle: 'https://www.kaggle.com/mdmursalineparvez',
+  portfolio: 'https://mursalineparvez.vercel.app/',
   portrait: '/assets/mursaline-portrait-nobg.png',
   education: {
     degree: 'Bachelor of Science (B.Sc.) in Computer Science and Engineering',
@@ -76,7 +77,7 @@ export const PROFILE = {
     location: 'Narayanganj, Bangladesh',
   },
   summary:
-    'Computer Science and Engineering graduate from Green University of Bangladesh with approximately four years of experience in JavaScript and web development. Primarily focused on building responsive websites and modern web applications with React, Next.js, Node.js, Tailwind CSS, and WordPress, supported by foundational knowledge of MySQL and MongoDB databases alongside n8n AI workflow automation.',
+    'Web Developer and CSE graduate from Green University of Bangladesh with ~4 years of JavaScript experience. Experienced in building responsive websites and web applications with React, Next.js, Node.js, Tailwind CSS, and WordPress — backed by foundational MySQL, MongoDB, and n8n AI workflow skills. Ships clean, user-focused digital platforms alongside applied research in Bangla NLP and machine learning.',
   researchSummary:
     'In addition to core web engineering across Zikr+, Byakaron, Green Campus, SPSB, and RDCS, contributed to AI automation agents at Robo Tech Valley and research in Bangla Natural Language Processing (NLP). Actively involved in STEM education, programming mentorship, and national science olympiad leadership through SPSB, BdJSO, and BdOSN.',
 };

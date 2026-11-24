@@ -64,10 +64,9 @@ export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
               </h1>
 
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
-                I am <span className="font-medium text-zinc-900 dark:text-zinc-100">{PROFILE.name}</span> — a Computer
-                Science and Engineering graduate with roughly four years of JavaScript experience. My core focus is
-                building responsive websites and web applications with React, Next.js, and Node.js—backed by
-                foundational MySQL and MongoDB skills alongside n8n AI automation.
+                I&apos;m <span className="font-medium text-zinc-900 dark:text-zinc-100">{PROFILE.name}</span> — a Web
+                Developer and CSE graduate crafting responsive websites and full-stack apps with React, Next.js,
+                Node.js, and WordPress, supported by foundational MySQL, MongoDB, and n8n AI automation.
               </p>
             </div>
 
@@ -111,6 +110,18 @@ export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
               </div>
 
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                <a
+                  href={PROFILE.portfolio}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 transition-colors hover:text-blue-600 dark:hover:text-blue-400 whitespace-nowrap shrink-0"
+                >
+                  <span>Portfolio</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+                <span className="text-zinc-300 dark:text-zinc-700" aria-hidden="true">
+                  /
+                </span>
                 <a
                   href={PROFILE.github}
                   target="_blank"

@@ -20,6 +20,84 @@ const MARGIN_X = 14;
 const CONTENT_W = PAGE_W - MARGIN_X * 2; // 182mm
 
 type IconKind = 'briefcase' | 'folder' | 'wrench' | 'book' | 'cap' | 'award' | 'org';
+type ContactIconKind = 'mail' | 'phone' | 'pin' | 'globe' | 'linkedin' | 'github' | 'kaggle';
+
+function drawContactIcon(doc: jsPDF, kind: ContactIconKind, x: number, baselineY: number) {
+  const cy = baselineY - 1.1;
+  const cx = x + 1.5;
+  doc.setDrawColor(...ACCENT);
+  doc.setFillColor(...ACCENT);
+  doc.setLineWidth(0.28);
+
+  if (kind === 'mail') {
+    doc.rect(cx - 1.5, cy - 1.05, 3.0, 2.1, 'S');
+    doc.line(cx - 1.5, cy - 1.05, cx, cy + 0.15);
+    doc.line(cx + 1.5, cy - 1.05, cx, cy + 0.15);
+  } else if (kind === 'phone') {
+    doc.roundedRect(cx - 0.95, cy - 1.45, 1.9, 2.9, 0.35, 0.35, 'S');
+    doc.line(cx - 0.35, cy - 1.1, cx + 0.35, cy - 1.1);
+    doc.circle(cx, cy + 1.05, 0.18, 'F');
+  } else if (kind === 'pin') {
+    doc.circle(cx, cy - 0.45, 0.95, 'S');
+    doc.circle(cx, cy - 0.45, 0.28, 'F');
+    doc.line(cx - 0.72, cy + 0.12, cx, cy + 1.4);
+    doc.line(cx + 0.72, cy + 0.12, cx, cy + 1.4);
+  } else if (kind === 'globe') {
+    doc.circle(cx, cy, 1.35, 'S');
+    doc.ellipse(cx, cy, 0.65, 1.35, 'S');
+    doc.line(cx - 1.35, cy, cx + 1.35, cy);
+  } else if (kind === 'linkedin') {
+    doc.roundedRect(cx - 1.45, cy - 1.45, 2.9, 2.9, 0.45, 0.45, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(5.4);
+    doc.setTextColor(255, 255, 255);
+    doc.text('in', cx, cy + 0.65, { align: 'center' });
+  } else if (kind === 'github') {
+    doc.circle(cx, cy, 1.45, 'F');
+    doc.setFillColor(255, 255, 255);
+    doc.circle(cx, cy + 0.1, 0.72, 'F');
+    doc.triangle(cx - 0.85, cy - 0.35, cx - 0.55, cy - 1.05, cx - 0.2, cy - 0.5, 'F');
+    doc.triangle(cx + 0.85, cy - 0.35, cx + 0.55, cy - 1.05, cx + 0.2, cy - 0.5, 'F');
+    doc.rect(cx - 0.32, cy + 0.65, 0.64, 0.75, 'F');
+  } else {
+    doc.roundedRect(cx - 1.45, cy - 1.45, 2.9, 2.9, 0.45, 0.45, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(...ACCENT);
+    doc.text('k', cx, cy + 0.75, { align: 'center' });
+  }
+}
+
+function drawContactRow(
+  doc: jsPDF,
+  items: { icon: ContactIconKind; label: string; url?: string }[],
+  startX: number,
+  y: number,
+) {
+  let curX = startX;
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    drawContactIcon(doc, item.icon, curX, y);
+    curX += 4.2;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.9);
+    doc.setTextColor(...INK);
+    doc.text(item.label, curX, y);
+    const w = doc.getTextWidth(item.label);
+    if (item.url) {
+      doc.link(curX - 4.2, y - 3.3, w + 4.5, 4.3, { url: item.url });
+    }
+    curX += w;
+
+    if (i < items.length - 1) {
+      doc.setTextColor(...MUTED);
+      const sep = '   |   ';
+      doc.text(sep, curX, y);
+      curX += doc.getTextWidth(sep);
+    }
+  }
+}
 
 function drawSectionIcon(doc: jsPDF, kind: IconKind, cx: number, cy: number) {
   doc.setDrawColor(...ACCENT);
@@ -183,39 +261,48 @@ export function buildResumeDocument(portraitDataUrl: string | null): jsPDF {
   doc.setTextColor(...ACCENT);
   doc.text('Web Developer · Full-Stack JavaScript & AI Automation', MARGIN_X, y);
 
-  // Contact info (2 compact rows on left of headshot)
-  y += 6.8;
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9.2);
-  doc.setTextColor(...INK);
+  // Contact info with related icons (3 compact rows left of headshot)
+  y += 6.4;
+  drawContactRow(
+    doc,
+    [
+      { icon: 'mail', label: PROFILE.email, url: `mailto:${PROFILE.email}` },
+      { icon: 'phone', label: PROFILE.phone, url: `tel:${PROFILE.phone}` },
+      { icon: 'globe', label: 'mursalineparvez.vercel.app', url: PROFILE.portfolio },
+    ],
+    MARGIN_X,
+    y,
+  );
 
-  const row1 = `${PROFILE.email}   |   ${PROFILE.phone}   |   ${PROFILE.location}`;
-  doc.text(row1, MARGIN_X, y);
-  doc.link(MARGIN_X, y - 3.5, doc.getTextWidth(PROFILE.email), 4.5, { url: `mailto:${PROFILE.email}` });
+  y += 4.9;
+  drawContactRow(
+    doc,
+    [
+      { icon: 'pin', label: PROFILE.location },
+      { icon: 'linkedin', label: 'linkedin.com/in/mursalineparvez', url: PROFILE.linkedin },
+    ],
+    MARGIN_X,
+    y,
+  );
 
-  y += 5;
-  const linkedInLabel = 'linkedin.com/in/mursalineparvez';
-  const githubLabel = 'github.com/Mursalineparvez';
-  const kaggleLabel = 'kaggle.com/mdmursalineparvez';
-  const row2 = `${linkedInLabel}   |   ${githubLabel}   |   ${kaggleLabel}`;
-  doc.text(row2, MARGIN_X, y);
+  y += 4.9;
+  drawContactRow(
+    doc,
+    [
+      { icon: 'github', label: 'github.com/Mursalineparvez', url: PROFILE.github },
+      { icon: 'kaggle', label: 'kaggle.com/mdmursalineparvez', url: PROFILE.kaggle },
+    ],
+    MARGIN_X,
+    y,
+  );
 
-  const liW = doc.getTextWidth(linkedInLabel);
-  const sepW = doc.getTextWidth('   |   ');
-  const ghW = doc.getTextWidth(githubLabel);
-  const kgW = doc.getTextWidth(kaggleLabel);
-  doc.link(MARGIN_X, y - 3.5, liW, 4.5, { url: PROFILE.linkedin });
-  doc.link(MARGIN_X + liW + sepW, y - 3.5, ghW, 4.5, { url: PROFILE.github });
-  doc.link(MARGIN_X + liW + sepW + ghW + sepW, y - 3.5, kgW, 4.5, { url: PROFILE.kaggle });
-
-  y = Math.max(y + 7.5, avatarY + avatarSize + 4);
+  y = Math.max(y + 6.5, avatarY + avatarSize + 4);
 
   // Summary paragraph
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.4);
   doc.setTextColor(...INK);
-  const fullSummary = `${PROFILE.summary} Research interests include Bangla Natural Language Processing (NLP), grammatical error correction, and machine learning.`;
-  const summaryLines = doc.splitTextToSize(fullSummary, CONTENT_W);
+  const summaryLines = doc.splitTextToSize(PROFILE.summary, CONTENT_W);
   doc.text(summaryLines, MARGIN_X, y);
   y += summaryLines.length * 4.2 + 4;
 

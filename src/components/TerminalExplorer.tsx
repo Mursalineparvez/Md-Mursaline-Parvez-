@@ -148,11 +148,12 @@ function evaluateCommand(rawInput: string): TerminalLine[] | 'CLEAR' {
   if (cmd === 'contact') {
     return [
       { id: `${ts}-1`, type: 'heading', text: 'Direct Channels:' },
-      { id: `${ts}-2`, type: 'output', text: `Email:    ${PROFILE.email}` },
-      { id: `${ts}-3`, type: 'output', text: `Phone:    ${PROFILE.phone}` },
-      { id: `${ts}-4`, type: 'output', text: `GitHub:   ${PROFILE.github}` },
-      { id: `${ts}-5`, type: 'output', text: `LinkedIn: ${PROFILE.linkedin}` },
-      { id: `${ts}-6`, type: 'output', text: `Kaggle:   ${PROFILE.kaggle}` },
+      { id: `${ts}-2`, type: 'output', text: `Email:     ${PROFILE.email}` },
+      { id: `${ts}-3`, type: 'output', text: `Phone:     ${PROFILE.phone}` },
+      { id: `${ts}-4`, type: 'output', text: `Portfolio: ${PROFILE.portfolio}` },
+      { id: `${ts}-5`, type: 'output', text: `GitHub:    ${PROFILE.github}` },
+      { id: `${ts}-6`, type: 'output', text: `LinkedIn:  ${PROFILE.linkedin}` },
+      { id: `${ts}-7`, type: 'output', text: `Kaggle:    ${PROFILE.kaggle}` },
     ];
   }
 

@@ -216,6 +216,15 @@ export function ContactSection() {
 
           <div className="flex flex-wrap items-center gap-5">
             <a
+              href={PROFILE.portfolio}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 hover:text-zinc-900 dark:hover:text-zinc-100"
+            >
+              <span>Portfolio</span>
+              <ExternalLink className="h-3 w-3" />
+            </a>
+            <a
               href={PROFILE.github}
               target="_blank"
               rel="noreferrer"
