@@ -12,7 +12,7 @@ export function SkillsSection() {
             </h2>
           </div>
           <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
-            Spanning full-stack JavaScript engineering, n8n workflow orchestration, Python ML pipelines, and Bangla NLP.
+            Centered on React, Next.js, Node.js, responsive web UI, and foundational MySQL &amp; MongoDB databases, plus n8n automation.
           </p>
         </div>
 

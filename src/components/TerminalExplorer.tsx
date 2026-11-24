@@ -43,17 +43,17 @@ function evaluateCommand(rawInput: string): TerminalLine[] | 'CLEAR' {
       {
         id: `${ts}-3`,
         type: 'output',
-        text: 'experience   — Work experience at Robo Tech Valley',
+        text: 'experience   — Robo Tech Valley, WeCycle & BdOSN SISCA experience',
       },
       {
         id: `${ts}-4`,
         type: 'output',
-        text: 'projects     — Summary of 11 shipped apps, agents & research builds',
+        text: `projects     — Summary of ${PROJECTS.length} shipped websites, apps & agents`,
       },
       {
         id: `${ts}-5`,
         type: 'output',
-        text: 'research     — Bangla NLP & cybersecurity ML focus areas',
+        text: 'research     — Bangla NLP & grammatical error correction focus',
       },
       {
         id: `${ts}-6`,
@@ -63,7 +63,7 @@ function evaluateCommand(rawInput: string): TerminalLine[] | 'CLEAR' {
       {
         id: `${ts}-7`,
         type: 'output',
-        text: 'skills       — Languages, AI/ML, n8n automation & frameworks',
+        text: 'skills       — React, Node.js, MySQL/MongoDB basics, AI & n8n',
       },
       {
         id: `${ts}-8`,
@@ -85,21 +85,20 @@ function evaluateCommand(rawInput: string): TerminalLine[] | 'CLEAR' {
       {
         id: `${ts}-4`,
         type: 'output',
-        text: '~4 years of JavaScript development, n8n workflow automation, AI agents, and Bangla NLP research.',
+        text: '~4 years of JavaScript & web development (React, Next.js, Node.js, MySQL/MongoDB basics) + n8n automation.',
       },
     ];
   }
 
   if (cmd === 'experience') {
-    const exp = WORK_EXPERIENCE[0];
-    return [
-      { id: `${ts}-1`, type: 'heading', text: `${exp.role} — ${exp.company} (${exp.type})` },
+    return WORK_EXPERIENCE.flatMap((exp, expIdx) => [
+      { id: `${ts}-h-${expIdx}`, type: 'heading' as const, text: `${exp.role} — ${exp.company} (${exp.type})` },
       ...exp.highlights.map((item, idx) => ({
-        id: `${ts}-h-${idx}`,
+        id: `${ts}-${expIdx}-${idx}`,
         type: 'output' as const,
         text: `• ${item}`,
       })),
-    ];
+    ]);
   }
 
   if (cmd === 'projects') {

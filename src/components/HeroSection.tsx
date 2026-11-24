@@ -1,6 +1,7 @@
-import { ArrowRight, Check, Copy, ExternalLink, Moon, Sun } from 'lucide-react';
+import { ArrowRight, Check, Copy, ExternalLink, FileDown, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { KEY_METRICS, PROFILE } from '../data/portfolio';
+import { downloadResumePdf } from '../utils/generateResumePdf';
 import { TerminalExplorer } from './TerminalExplorer';
 
 interface HeroSectionProps {
@@ -10,6 +11,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [downloadingResume, setDownloadingResume] = useState(false);
 
   const handleCopyEmail = async () => {
     try {
@@ -18,6 +20,16 @@ export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
       setTimeout(() => setCopiedEmail(false), 2000);
     } catch {
       window.location.href = `mailto:${PROFILE.email}`;
+    }
+  };
+
+  const handleDownloadResume = async () => {
+    if (downloadingResume) return;
+    setDownloadingResume(true);
+    try {
+      await downloadResumePdf();
+    } finally {
+      setTimeout(() => setDownloadingResume(false), 1200);
     }
   };
 
@@ -48,14 +60,14 @@ export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
               </div>
 
               <h1 className="mt-6 font-display text-[clamp(2.25rem,4vw,3.5rem)] font-bold leading-[1.08] tracking-tight text-zinc-950 dark:text-zinc-50 [text-wrap:balance]">
-                Software engineer building AI agents, automation workflows, and web platforms.
+                Web developer building modern websites, React apps, and smart automation.
               </h1>
 
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
                 I am <span className="font-medium text-zinc-900 dark:text-zinc-100">{PROFILE.name}</span> — a Computer
-                Science and Engineering graduate with roughly four years of JavaScript experience. I build n8n
-                automation systems and AI agents at Robo Tech Valley, research Bangla NLP and cybersecurity machine
-                learning, and lead national STEM initiatives.
+                Science and Engineering graduate with roughly four years of JavaScript experience. My core focus is
+                building responsive websites and web applications with React, Next.js, and Node.js—backed by
+                foundational MySQL and MongoDB skills alongside n8n AI automation.
               </p>
             </div>
 
@@ -68,6 +80,16 @@ export function HeroSection({ isDark, onToggleTheme }: HeroSectionProps) {
                   <span>View Selected Work</span>
                   <ArrowRight className="h-4 w-4" />
                 </a>
+
+                <button
+                  type="button"
+                  onClick={handleDownloadResume}
+                  disabled={downloadingResume}
+                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-100 disabled:opacity-60 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800 whitespace-nowrap shrink-0"
+                >
+                  <FileDown className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span>{downloadingResume ? 'Preparing PDF...' : 'Download Resume'}</span>
+                </button>
 
                 <button
                   type="button"

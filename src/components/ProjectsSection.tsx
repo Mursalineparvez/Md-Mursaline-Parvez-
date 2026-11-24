@@ -5,8 +5,8 @@ import { ProjectModal } from './ProjectModal';
 
 const FILTER_OPTIONS: { id: ProjectCategory; label: string }[] = [
   { id: 'all', label: 'All Projects' },
-  { id: 'ai-automation', label: 'AI & Automation' },
   { id: 'web-platforms', label: 'Web & Platforms' },
+  { id: 'ai-automation', label: 'AI & Automation' },
   { id: 'ml-research', label: 'ML & Research' },
 ];
 
@@ -65,126 +65,140 @@ export function ProjectsSection() {
         </div>
 
         <p className="mt-3 text-xs text-zinc-500 tabular-nums dark:text-zinc-400">
-          Showing {filteredProjects.length} of {PROJECTS.length} documented projects · Click any card or screenshot for
-          full details
+          Showing {filteredProjects.length} of {PROJECTS.length} documented projects · Click any card for full details
         </p>
 
         {flagshipProject && (
-          <article className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-[#121216] md:p-8">
-            <div className="flex flex-col justify-between gap-4 border-b border-zinc-200 pb-6 dark:border-zinc-800 lg:flex-row lg:items-end">
-              <div>
-                <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                  <span className="font-mono tabular-nums">{flagshipProject.index}</span>
-                  <span className="mx-1.5" aria-hidden="true">
-                    ·
-                  </span>
-                  <span>{flagshipProject.subtitle}</span>
-                  <span className="mx-1.5" aria-hidden="true">
-                    ·
-                  </span>
-                  <span className="font-medium text-blue-600 dark:text-blue-400">Featured Release</span>
-                </div>
-
-                <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
-                  <button
-                    type="button"
-                    onClick={() => openProjectModal(flagshipProject, 0)}
-                    className="text-left transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-                  >
-                    {flagshipProject.title}
-                  </button>
-                </h3>
-
-                <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  {flagshipProject.summary}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3 shrink-0">
-                {flagshipProject.links.map((link, idx) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={
-                      idx === 0
-                        ? 'inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700 whitespace-nowrap shrink-0'
-                        : 'inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs font-medium text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 whitespace-nowrap shrink-0'
-                    }
-                  >
-                    <span>{link.label}</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </a>
-                ))}
+          <article className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#121216]">
+            <div className="grid grid-cols-1 items-stretch lg:grid-cols-12">
+              <div className="border-b border-zinc-200 bg-zinc-100 p-5 dark:border-zinc-800 dark:bg-zinc-950/70 lg:col-span-5 lg:border-b-0 lg:border-r">
                 <button
                   type="button"
                   onClick={() => openProjectModal(flagshipProject, 0)}
-                  className="inline-flex items-center rounded-lg border border-zinc-200 px-3.5 py-2 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 whitespace-nowrap shrink-0"
+                  className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white text-left shadow-sm transition-colors hover:border-blue-500/70 dark:border-zinc-800 dark:bg-zinc-950"
                 >
-                  Full Feature List
+                  <div className="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-3.5 py-2 text-[11px] font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                    <span className="font-mono">zikr-mate.vercel.app</span>
+                    <span className="tabular-nums text-blue-600 dark:text-blue-400">
+                      {flagshipProject.gallery?.length ?? 1} App Screens
+                    </span>
+                  </div>
+
+                  <div className="aspect-[4/3] w-full flex-1 overflow-hidden bg-white">
+                    {!failedImages[flagshipProject.id] && flagshipProject.image ? (
+                      <img
+                        src={flagshipProject.image}
+                        alt={flagshipProject.imageAlt || flagshipProject.title}
+                        referrerPolicy="no-referrer"
+                        onError={() => setFailedImages((prev) => ({ ...prev, [flagshipProject.id]: true }))}
+                        className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 text-center">
+                        <Layers className="h-6 w-6 text-blue-400" />
+                        <span className="mt-2 font-display text-sm font-semibold text-zinc-200">
+                          {flagshipProject.title}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </button>
               </div>
-            </div>
 
-            {flagshipProject.gallery && flagshipProject.gallery.length > 0 && (
-              <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
-                {flagshipProject.gallery.map((shot, idx) => {
-                  const key = `${flagshipProject.id}-${idx}`;
-                  const hasFailed = failedImages[key];
-                  return (
+              <div className="flex flex-col justify-between p-6 lg:col-span-7 md:p-8">
+                <div>
+                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <span className="font-mono tabular-nums">{flagshipProject.index}</span>
+                    <span className="mx-1.5" aria-hidden="true">
+                      ·
+                    </span>
+                    <span>{flagshipProject.subtitle}</span>
+                    <span className="mx-1.5" aria-hidden="true">
+                      ·
+                    </span>
+                    <span className="font-medium text-blue-600 dark:text-blue-400">Featured Release</span>
+                  </div>
+
+                  <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">
                     <button
-                      key={shot.src}
                       type="button"
-                      onClick={() => openProjectModal(flagshipProject, idx)}
-                      className="group overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 text-left transition-colors hover:border-blue-500/60 dark:border-zinc-800 dark:bg-zinc-950"
+                      onClick={() => openProjectModal(flagshipProject, 0)}
+                      className="text-left transition-colors hover:text-blue-600 dark:hover:text-blue-400"
                     >
-                      <div className="aspect-[4/3] w-full overflow-hidden bg-zinc-950">
-                        {!hasFailed ? (
-                          <img
-                            src={shot.src}
-                            alt={shot.alt}
-                            referrerPolicy="no-referrer"
-                            onError={() => setFailedImages((prev) => ({ ...prev, [key]: true }))}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 text-center">
-                            <Layers className="h-6 w-6 text-blue-400" />
-                            <span className="mt-2 text-xs text-zinc-300">{shot.caption}</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="px-4 py-3">
-                        <div className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{shot.caption}</div>
-                      </div>
+                      {flagshipProject.title}
                     </button>
-                  );
-                })}
-              </div>
-            )}
+                  </h3>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 border-t border-zinc-200 pt-5 text-xs leading-relaxed text-zinc-600 dark:border-zinc-800 dark:text-zinc-400 md:grid-cols-2">
-              {flagshipProject.highlights.map((highlight) => (
-                <div key={highlight} className="flex items-start gap-2.5">
-                  <span
-                    className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400"
-                    aria-hidden="true"
-                  />
-                  <span>{highlight}</span>
+                  {flagshipProject.tagline && (
+                    <p className="mt-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                      {flagshipProject.tagline}
+                    </p>
+                  )}
+
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    {flagshipProject.summary}
+                  </p>
+
+                  {flagshipProject.coreModules && (
+                    <div className="mt-5 grid grid-cols-1 gap-2 border-t border-zinc-200 pt-4 text-xs dark:border-zinc-800 sm:grid-cols-2">
+                      {flagshipProject.coreModules.slice(0, 6).map((mod) => (
+                        <div key={mod.name} className="flex items-start gap-2">
+                          <span
+                            className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400"
+                            aria-hidden="true"
+                          />
+                          <div>
+                            <span className="font-semibold text-zinc-900 dark:text-zinc-100">{mod.name}: </span>
+                            <span className="text-zinc-600 dark:text-zinc-400">{mod.purpose}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
 
-            <div className="mt-4 text-xs text-zinc-500 dark:text-zinc-400">
-              <span className="font-medium text-zinc-700 dark:text-zinc-300">Stack: </span>
-              {flagshipProject.stack.join(' · ')}
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200 pt-5 dark:border-zinc-800">
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                    {flagshipProject.stack.slice(0, 5).join(' · ')}
+                  </span>
+
+                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                    {flagshipProject.links.map((link, idx) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={
+                          idx === 0
+                            ? 'inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700 whitespace-nowrap shrink-0'
+                            : 'inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 py-2 text-xs font-medium text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 whitespace-nowrap shrink-0'
+                        }
+                      >
+                        <span>{link.label}</span>
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      </a>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => openProjectModal(flagshipProject, 0)}
+                      className="inline-flex items-center rounded-lg border border-zinc-200 px-3.5 py-2 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-800 whitespace-nowrap shrink-0"
+                    >
+                      Details &amp; {flagshipProject.gallery?.length ?? 0} Screens
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         )}
 
         {featuredVisuals.length > 0 && (
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div
+            className={`mt-8 grid grid-cols-1 gap-6 ${
+              featuredVisuals.length === 2 || featuredVisuals.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'
+            }`}
+          >
             {featuredVisuals.map((project) => {
               const hasFailed = failedImages[project.id];
               return (
@@ -258,7 +272,9 @@ export function ProjectsSection() {
                           onClick={() => openProjectModal(project, 0)}
                           className="font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white whitespace-nowrap"
                         >
-                          Details
+                          {project.gallery && project.gallery.length > 1
+                            ? `Details (${project.gallery.length} Screens)`
+                            : 'Details'}
                         </button>
                       </div>
                     </div>
@@ -270,7 +286,11 @@ export function ProjectsSection() {
         )}
 
         {remainingProjects.length > 0 && (
-          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div
+            className={`mt-8 grid grid-cols-1 gap-4 ${
+              remainingProjects.length === 1 ? 'md:grid-cols-1' : 'md:grid-cols-2'
+            }`}
+          >
             {remainingProjects.map((project) => (
               <article
                 key={project.id}
@@ -324,7 +344,9 @@ export function ProjectsSection() {
                       onClick={() => openProjectModal(project, 0)}
                       className="font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white whitespace-nowrap"
                     >
-                      Details
+                      {project.gallery && project.gallery.length > 1
+                        ? `Details (${project.gallery.length} Screens)`
+                        : 'Details'}
                     </button>
                   </div>
                 </div>

@@ -1,13 +1,25 @@
-import { ArrowUp, Check, Copy, ExternalLink, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { ArrowUp, Check, Copy, ExternalLink, FileDown, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 import { PROFILE } from '../data/portfolio';
+import { downloadResumePdf } from '../utils/generateResumePdf';
 
 export function ContactSection() {
   const [copiedField, setCopiedField] = useState<'email' | 'phone' | null>(null);
+  const [downloadingResume, setDownloadingResume] = useState(false);
   const [senderName, setSenderName] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const handleDownloadResume = async () => {
+    if (downloadingResume) return;
+    setDownloadingResume(true);
+    try {
+      await downloadResumePdf();
+    } finally {
+      setTimeout(() => setDownloadingResume(false), 1200);
+    }
+  };
 
   const handleCopy = async (value: string, field: 'email' | 'phone') => {
     try {
@@ -38,11 +50,11 @@ export function ContactSection() {
           <div className="lg:col-span-5">
             <p className="text-xs font-medium text-blue-600 dark:text-blue-400">06. Contact</p>
             <h2 className="mt-1 font-display text-2xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50 md:text-3xl [text-wrap:balance]">
-              Let&apos;s collaborate on AI automation or web engineering.
+              Let&apos;s collaborate on web development or AI automation.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-              Open to software engineering, AI workflow automation, and research collaborations. Certifications and
-              academic/professional references are available upon request.
+              Open to frontend and full-stack web engineering (React, Next.js, Node.js), WordPress sites, and n8n
+              workflow automation. Certifications and academic/professional references are available upon request.
             </p>
 
             <div className="mt-6 space-y-3 text-sm">
@@ -101,6 +113,19 @@ export function ContactSection() {
                   )}
                 </button>
               </div>
+
+              <button
+                type="button"
+                onClick={handleDownloadResume}
+                disabled={downloadingResume}
+                className="flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-4 py-3 font-medium text-zinc-900 transition-colors hover:border-blue-500/60 hover:text-blue-600 disabled:opacity-60 dark:border-zinc-800 dark:bg-[#121216] dark:text-zinc-100 dark:hover:border-blue-500/60 dark:hover:text-blue-400"
+              >
+                <span className="flex items-center gap-2.5">
+                  <FileDown className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span>{downloadingResume ? 'Generating Resume PDF...' : 'Download Resume (PDF)'}</span>
+                </span>
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">2 Pages</span>
+              </button>
 
               <div className="flex items-center gap-2.5 px-1 pt-1 text-xs text-zinc-600 dark:text-zinc-400">
                 <MapPin className="h-3.5 w-3.5 text-zinc-500" />

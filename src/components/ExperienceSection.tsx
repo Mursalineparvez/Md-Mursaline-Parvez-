@@ -16,13 +16,13 @@ export function ExperienceSection() {
             </h2>
           </div>
           <p className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
-            Engineering production automation workflows alongside a foundation in Computer Science and Bangla NLP.
+            Focused on React, Next.js, and Node.js web engineering alongside n8n workflow automation and CSE foundations.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <div className="flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#121216]">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-4 lg:sticky lg:top-24">
+            <div className="flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#121216]">
               <div className="aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-zinc-100 to-zinc-200/70 pt-4 dark:from-zinc-900/60 dark:to-[#121216]">
                 {!imgError ? (
                   <img
@@ -42,45 +42,51 @@ export function ExperienceSection() {
               <div className="p-5">
                 <div className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">{PROFILE.name}</div>
                 <div className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
-                  {PROFILE.location} · Software &amp; AI Automation Engineer
+                  {PROFILE.location} · Web Developer &amp; Software Engineer
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col justify-between gap-6 lg:col-span-8">
-            <div className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-[#121216] md:p-8">
-              <div className="flex flex-wrap items-start justify-between gap-4 border-b border-zinc-200 pb-5 dark:border-zinc-800">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-blue-400">
-                    <Briefcase className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-lg font-bold text-zinc-950 dark:text-zinc-50">
-                      {WORK_EXPERIENCE[0].role}
-                    </h3>
-                    <p className="mt-0.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                      {WORK_EXPERIENCE[0].company}
-                      <span className="mx-2 text-zinc-400 dark:text-zinc-600" aria-hidden="true">
-                        ·
-                      </span>
-                      <span className="font-normal text-zinc-600 dark:text-zinc-400">{WORK_EXPERIENCE[0].type}</span>
-                    </p>
+          <div className="flex flex-col gap-5 lg:col-span-8">
+            {WORK_EXPERIENCE.map((exp) => (
+              <div
+                key={exp.id}
+                className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-[#121216] md:p-7"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-4 border-b border-zinc-200 pb-4 dark:border-zinc-800">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-blue-400">
+                      <Briefcase className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-bold text-zinc-950 dark:text-zinc-50">{exp.role}</h3>
+                      <p className="mt-0.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                        {exp.company}
+                        <span className="mx-2 text-zinc-400 dark:text-zinc-600" aria-hidden="true">
+                          ·
+                        </span>
+                        <span className="font-normal text-zinc-600 dark:text-zinc-400">{exp.type}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+                  {exp.highlights.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span
+                        className="mt-2 h-1 w-1 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
+            ))}
 
-              <ul className="mt-5 space-y-2.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
-                {WORK_EXPERIENCE[0].highlights.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-[#121216] md:p-8">
+            <div className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-[#121216] md:p-7">
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 rounded-lg border border-zinc-200 bg-zinc-50 p-2 text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-blue-400">
                   <GraduationCap className="h-4 w-4" />
