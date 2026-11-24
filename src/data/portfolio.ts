@@ -77,7 +77,7 @@ export const PROFILE = {
     location: 'Narayanganj, Bangladesh',
   },
   summary:
-    'Web Developer and CSE graduate from Green University of Bangladesh with ~4 years of JavaScript experience. Experienced in building responsive websites and web applications with React, Next.js, Node.js, Tailwind CSS, and WordPress — backed by foundational MySQL, MongoDB, and n8n AI workflow skills. Ships clean, user-focused digital platforms alongside applied research in Bangla NLP and machine learning.',
+    'Web Developer holding a B.Sc. in Computer Science & Engineering, specializing in modern JavaScript development. Experienced in building responsive websites and web applications with React, Next.js, Node.js, Tailwind CSS, and WordPress — backed by foundational MySQL, MongoDB, and n8n AI workflow skills. Ships clean, user-focused digital platforms alongside applied research in Bangla NLP and machine learning.',
   researchSummary:
     'In addition to core web engineering across Zikr+, Byakaron, Green Campus, SPSB, and RDCS, contributed to AI automation agents at Robo Tech Valley and research in Bangla Natural Language Processing (NLP). Actively involved in STEM education, programming mentorship, and national science olympiad leadership through SPSB, BdJSO, and BdOSN.',
 };
